@@ -1,7 +1,12 @@
 import { cloudflare } from '@cloudflare/vite-plugin';
 import { defineConfig } from 'vite';
 import vinext from 'vinext';
-import { ailoGame, ailoProductionDomain, ailoWorkerName } from './ailo.config';
+import {
+  ailoCloudflare,
+  ailoGame,
+  ailoProductionDomain,
+  ailoWorkerName,
+} from './ailo.config';
 
 const isUnconfiguredTemplate = ailoGame.slug === 'change-me';
 
@@ -11,6 +16,7 @@ export default defineConfig({
     cloudflare({
       viteEnvironment: { name: 'rsc', childEnvironments: ['ssr'] },
       config: {
+        account_id: ailoCloudflare.accountId,
         name: ailoWorkerName,
         main: 'vinext/server/fetch-handler',
         compatibility_date: '2026-09-08',
