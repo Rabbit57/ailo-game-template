@@ -9,12 +9,27 @@ A game created from this template gets:
 - automatic production hostname derived from one slug
 - GitHub Actions checks and deployment on `main`
 - a small interactive starter game you can replace
+- only **one GitHub secret** per game repository
 
 ## 0. Enable GitHub template mode
 
 In this repository, open **Settings → General** and enable **Template repository**. After that, GitHub will show a **Use this template** button for creating future games.
 
-## 1. Create a game from this template
+## 1. Set the Cloudflare Account ID once in this template
+
+Edit `ailo.config.ts` and replace:
+
+```ts
+accountId: 'CHANGE_ME_CLOUDFLARE_ACCOUNT_ID'
+```
+
+with the Cloudflare Account ID used by AILO Games.
+
+The Account ID is an account identifier, not an authentication secret, so it is safe to keep in the repository configuration. The API token must remain secret.
+
+Once this is set in the template, every repository created from the template inherits the same Account ID automatically.
+
+## 2. Create a game from this template
 
 Use **Use this template** to create a new repository.
 
@@ -26,9 +41,9 @@ npm install
 
 Commit the generated `package-lock.json` so later CI runs use `npm ci` automatically.
 
-## 2. Configure the game
+## 3. Configure the game
 
-Edit only `ailo.config.ts` first:
+Edit the game section of `ailo.config.ts`:
 
 ```ts
 export const ailoGame = {
@@ -47,7 +62,7 @@ Domain: space-racer.ailocalops.com
 
 Slugs must use lowercase letters, numbers, and single hyphens.
 
-## 3. Build the game
+## 4. Build the game
 
 Replace `components/game.tsx` with the actual browser game UI and logic. Add any assets under `public/`.
 
@@ -65,22 +80,23 @@ npm run lint
 npm run build
 ```
 
-## 4. Add GitHub Actions secrets
+## 5. Add the one GitHub Actions secret
 
-In the new game repository:
+In each new game repository:
 
 **Settings → Secrets and variables → Actions**
 
-Add:
+Add only:
 
 ```text
-CLOUDFLARE_ACCOUNT_ID
 CLOUDFLARE_API_TOKEN
 ```
 
-Use the same Cloudflare account and deployment token used by the other AILO Workers. Never commit either value.
+Use the same Cloudflare deployment token used by the other AILO Workers. Never commit this token.
 
-## 5. Deploy
+The Cloudflare Account ID is already inherited from `ailo.config.ts`, so there is no `CLOUDFLARE_ACCOUNT_ID` repository secret anymore.
+
+## 6. Deploy
 
 Push to `main`:
 
@@ -96,7 +112,7 @@ GitHub Actions will:
 2. typecheck
 3. lint
 4. build
-5. validate the AILO game config
+5. validate the AILO game and Cloudflare account config
 6. deploy the Worker
 7. attach `<slug>.ailocalops.com` as a Cloudflare Custom Domain
 
@@ -104,7 +120,7 @@ Pull requests run checks but do not deploy production.
 
 The template repository itself deliberately skips deployment.
 
-## 6. Add the game to the AILO portal
+## 7. Add the game to the AILO portal
 
 In `Rabbit57/game-site`, add the game to the catalog using an external launch URL:
 
@@ -132,7 +148,7 @@ Then push `game-site/main`; the portal deploys automatically.
 new game repo
    ↓ git push main
 GitHub Actions
-   ↓
+   ↓ one secret: CLOUDFLARE_API_TOKEN
 Cloudflare Worker: ailo-<slug>
    ↓
 https://<slug>.ailocalops.com
