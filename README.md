@@ -10,9 +10,13 @@ A game created from this template gets:
 - GitHub Actions checks and deployment on `main`
 - a small interactive starter game you can replace
 
+## 0. Enable GitHub template mode
+
+In this repository, open **Settings → General** and enable **Template repository**. After that, GitHub will show a **Use this template** button for creating future games.
+
 ## 1. Create a game from this template
 
-After this repository is marked as a GitHub template, use **Use this template** to create a new repository.
+Use **Use this template** to create a new repository.
 
 Then clone it and install dependencies:
 
