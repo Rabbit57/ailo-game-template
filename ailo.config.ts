@@ -1,7 +1,7 @@
 export const ailoCloudflare = {
   // Cloudflare Account ID is an identifier, not a secret.
   // Set it once in the template so repositories created from it inherit the value.
-  accountId: 'CHANGE_ME_CLOUDFLARE_ACCOUNT_ID',
+  accountId: 'b6a9e7bbaeafb2b8098e1dff92e66ddb',
 } as const;
 
 export const ailoGame = {
